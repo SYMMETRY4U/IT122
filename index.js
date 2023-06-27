@@ -1,7 +1,6 @@
 // Import express
 const express = require('express');
 
-// Create an instance of express
 const app = express();
 
 // Define the port to run the server on
