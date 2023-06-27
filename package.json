@@ -1,18 +1,24 @@
 {
-    "name": "it122app",
-    "version": "1.0.0",
-    "description": "IT122 Application",
-    "main": "it122app.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/SYMMETRY4U/IT122.git"
-    },
-    "scripts": {
-        "start": "node it122app.js"
-    },
-    "author": "Your Name",
-    "license": "MIT",
-    "dependencies": {
-        "express": "^4.18.2"
-    }
+  "name": "it122app",
+  "version": "1.0.0",
+  "description": "IT122 Application",
+  "main": "it122app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SYMMETRY4U/IT122.git"
+  },
+  "scripts": {
+    "start": "node it122app.js"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "bugs": {
+    "url": "https://github.com/SYMMETRY4U/IT122/issues"
+  },
+  "homepage": "https://github.com/SYMMETRY4U/IT122#readme",
+  "devDependencies": {},
+  "keywords": []
 }
