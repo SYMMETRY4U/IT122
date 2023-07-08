@@ -3,7 +3,7 @@ const express = require('express');
 
 const app = express();
 
-// Define the port to run the server on
+// Define the port to run the server
 const PORT = 3000;
 
 // Define the route for the home page
