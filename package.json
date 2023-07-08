@@ -2,7 +2,7 @@
   "name": "it122app",
   "version": "1.0.0",
   "description": "IT122 Application",
-  "main": "it122app.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SYMMETRY4U/IT122.git"
