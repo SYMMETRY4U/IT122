@@ -1,4 +1,4 @@
 # IT122
 JavaScript 2
 Read me
-test info
+test information
