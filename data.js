@@ -32,11 +32,9 @@ const data = [
   ];
   
   const getAll = () => data;
-  
-  // Function to get an item by brand
+
   const getItem = (brand) => {
-    return data.find(item => item.brand === brand);
+      return data.find(item => item.brand === brand);
   }
   
-  // Export the functions
-  export { getAll, getItem };
+  module.exports = { getAll, getItem };
