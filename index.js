@@ -1,5 +1,3 @@
-// index.js
-
 // Import express
 const express = require('express');
 const path = require('path');
@@ -41,7 +39,7 @@ app.get('/about', (req, res) => {
 
 // Define a default route for all other paths to return a 404
 app.use((req, res) => {
-    res.status(404).send('Sorry, we cannot find that!');
+    res.status(404).render('404'); 
 });
 
 // Start the server
