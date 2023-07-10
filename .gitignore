@@ -1,4 +1,12 @@
 # Logs
+
+#ignore files installed by npm
+node_modules
+# ignore npm packages
+node_modules
+.idea/
+.DS_Store
+
 logs
 *.log
 npm-debug.log*
