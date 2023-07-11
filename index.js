@@ -26,11 +26,12 @@ app.get('/detail', (req, res) => {
     const { brand } = req.query;
     const item = getItem(brand);
     if (item) {
-        res.render('detail', { title: `Detail for ${brand}`, item }); // Pass title and item to the detail.ejs
+        res.render('detail', { title: `Detail for ${brand}`, item, pageTitle: 'Vintage Bike Info', header: 'Vintage Motocross' }); 
     } else {
-        res.status(404).render('404'); // Render 404.ejs page
+        res.status(404).render('404'); 
     }
 });
+
 
 // Define the route for the about page
 app.get('/about', (req, res) => {
