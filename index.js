@@ -7,13 +7,13 @@ const app = express();
 
 // Set EJS as view engine and specify directory for ejs templates
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'public'));
+// app.set('views', path.join(__dirname, 'public'));
 
 // Express to serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Define the port to run the server
-const PORT = 3000;
+app.set('port', process.env.PORT || 3000);
 
 // Define the route for the home page
 app.get('/', (req, res) => {
