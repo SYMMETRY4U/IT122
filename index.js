@@ -10,7 +10,7 @@ app.set('view engine', 'ejs');
 // app.set('views', path.join(__dirname, 'public'));
 
 // Express to serve static files from public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views')));
 
 // Define the port to run the server
 app.set('port', process.env.PORT || 3000);
