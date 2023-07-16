@@ -1,34 +1,42 @@
 // Import express
 import express from 'express';
 import path from 'path';
-import { getAll, getItem } from './data.js'; // Import data.js module
+import { Motorcycle } from './models/Motorcycles.js'; 
 
 const app = express();
 
-// Set EJS as view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(process.cwd(), 'views'));
 
-// Express views directory
 app.use(express.static(path.join(process.cwd(), 'views')));
 
 const PORT = process.env.PORT || 3000;
 app.set('port', PORT);
 
 // Define the route for the home page
-app.get('/', (req, res) => {
-    const data = getAll();
-    res.render('home', { data }); // Render home.ejs
+app.get('/', async (req, res) => {
+    try {
+        const data = await Motorcycle.find({}).lean();
+        res.render('home', { data }); // Render home.ejs
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 // Define the route for the detail page
-app.get('/detail', (req, res) => {
+app.get('/detail', async (req, res) => {
     const { brand } = req.query;
-    const item = getItem(brand);
-    if (item) {
-        res.render('detail', { title: `Detail for ${brand}`, item, pageTitle: 'Vintage Bike Info', header: 'Vintage Motocross' }); 
-    } else {
-        res.status(404).render('404'); 
+    try {
+        const item = await Motorcycle.findOne({ brand }).lean();
+        if (item) {
+            res.render('detail', { title: `Detail for ${brand}`, item, pageTitle: 'Vintage Bike Info', header: 'Vintage Motocross' }); 
+        } else {
+            res.status(404).render('404'); 
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
     }
 });
 
