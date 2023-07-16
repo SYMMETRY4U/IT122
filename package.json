@@ -23,5 +23,6 @@
     "url": "https://github.com/SYMMETRY4U/IT122/issues"
   },
   "homepage": "https://github.com/SYMMETRY4U/IT122#readme",
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {}
 }

@@ -1,40 +1,40 @@
 const data = [
-    {
-      brand: 'Yamaha',
-      model: 'YZ125',
-      year: 1976,
-      color: 'Yellow'
-    },
-    {
-      brand: 'Macio',
-      model: 'MC400',
-      year: 1976,
-      color: 'Red'
-    },
-    {
-      brand: 'Honda',
-      model: 'CR250M',
-      year: 1977,
-      color: 'Red'
-    },
-    {
-      brand: 'Suzuki',
-      model: 'TM400',
-      year: 1974,
-      color: 'Yellow'
-    },
-    {
-      brand: 'Husqvarna',
-      model: '125CR',
-      year: 1974,
-      color: 'Orange'
-    }
-  ];
-  
-  const getAll = () => data;
-
-  const getItem = (brand) => {
-      return data.find(item => item.brand === brand);
+  {
+    brand: 'Yamaha',
+    model: 'YZ125',
+    year: 1976,
+    color: 'Yellow'
+  },
+  {
+    brand: 'Macio',
+    model: 'MC400',
+    year: 1976,
+    color: 'Red'
+  },
+  {
+    brand: 'Honda',
+    model: 'CR250M',
+    year: 1977,
+    color: 'Red'
+  },
+  {
+    brand: 'Suzuki',
+    model: 'TM400',
+    year: 1974,
+    color: 'Yellow'
+  },
+  {
+    brand: 'Husqvarna',
+    model: '125CR',
+    year: 1974,
+    color: 'Orange'
   }
-  
-  module.exports = { getAll, getItem };
+];
+
+const getAll = () => data;
+
+const getItem = (brand) => {
+    return data.find(item => item.brand === brand);
+}
+
+export { getAll, getItem };

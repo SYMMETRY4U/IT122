@@ -1,24 +1,24 @@
 // Import express
-const express = require('express');
-const path = require('path');
-const { getAll, getItem } = require('./data'); // Import data.js module
+import express from 'express';
+import path from 'path';
+import { getAll, getItem } from './data.js'; // Import data.js module
 
 const app = express();
 
-// Set EJS as view engine and specify directory for ejs templates
+// Set EJS as view engine
 app.set('view engine', 'ejs');
-// app.set('views', path.join(__dirname, 'public'));
+app.set('views', path.join(process.cwd(), 'views'));
 
-// Express to serve static files from public directory
-app.use(express.static(path.join(__dirname, 'views')));
+// Express views directory
+app.use(express.static(path.join(process.cwd(), 'views')));
 
-// Define the port to run the server
-app.set('port', process.env.PORT || 3000);
+const PORT = process.env.PORT || 3000;
+app.set('port', PORT);
 
 // Define the route for the home page
 app.get('/', (req, res) => {
     const data = getAll();
-    res.render('home', { data }); // Render home.ejs and pass the data to it
+    res.render('home', { data }); // Render home.ejs
 });
 
 // Define the route for the detail page
@@ -31,7 +31,6 @@ app.get('/detail', (req, res) => {
         res.status(404).render('404'); 
     }
 });
-
 
 // Define the route for the about page
 app.get('/about', (req, res) => {
