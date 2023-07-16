@@ -13,7 +13,7 @@ app.use(express.static(path.join(process.cwd(), 'views')));
 const PORT = process.env.PORT || 3000;
 app.set('port', PORT);
 
-// Define the route for the home page
+// home page
 app.get('/', async (req, res) => {
     try {
         const data = await Motorcycle.find({}).lean();
@@ -45,12 +45,11 @@ app.get('/about', (req, res) => {
     res.render('about'); // Render about.ejs page
 });
 
-// Define a default route for all other paths to return a 404
 app.use((req, res) => {
     res.status(404).render('404'); 
 });
 
-// Start the server
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
