@@ -1,5 +1,5 @@
 # Logs
-
+ credentials.js
 #ignore files installed by npm
 node_modules
 # ignore npm packages
