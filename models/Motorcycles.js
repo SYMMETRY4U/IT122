@@ -3,11 +3,19 @@ const { Schema } = mongoose;
 
 // For security, connectionString should be in a separate file and excluded from git
 import {connectionString} from '../models/credentials.js';
+
+
+
 mongoose.connect(connectionString, {
-    dbName: 'itprojects',
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+  dbName: 'itprojects',
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('Mongoose connected.');
+}).catch((error) => {
+  console.error('Error connecting to MongoDB:', error);
 });
+
 
 mongoose.connection.on('open', () => {
   console.log('Mongoose connected.');
