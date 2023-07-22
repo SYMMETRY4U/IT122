@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>Vintage Motocross</title>
     <link rel="stylesheet" type="text/css" href="/public/styles.css">
+
+
 </head>
 <body>
-    <div>
-    <h1>Home</h1>
+	<div class="wrapper">
+    <div style="margin-left: 12em">
+    <h1> Vintage Motocross</h1>
+		
     <ul>
         <% data.forEach(item => { %>
             <li>
@@ -14,6 +18,27 @@
             </li>
         <% }); %>
     </ul>
+
+    <h3>Delete Motorcycle</h3>
+
+    <input id="deleteInput" type="text" placeholder="Enter brand to delete">
+    <button id="deleteBtn">Delete</button>
+    
+    
+    <!-- Add or Update Motorcycle -->
+    <h3>Add/Update Motorcycle</h3>
+    <form id="addUpdateForm">
+        <input name="brand" type="text" placeholder="Brand" required>
+        <input name="model" type="text" placeholder="Model" required>
+        <input name="year" type="number" placeholder="Year" required>
+        <input name="color" type="text" placeholder="Color" required>
+        <button type="submit">Add/Update</button>
+    </form>
+
+	<%- include('addhw4.ejs') %>
+		
     </div>
+		</div>
+		
 </body>
 </html>
