@@ -1,44 +1,45 @@
-<!DOCTYPE html>
 <html>
 <head>
-    <title>Vintage Motocross</title>
-    <link rel="stylesheet" type="text/css" href="/public/styles.css">
+    <title>Vintage Motorcycles</title>
 
-
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+   
 </head>
+
 <body>
+
 	<div class="wrapper">
-    <div style="margin-left: 12em">
-    <h1> Vintage Motocross</h1>
-		
-    <ul>
-        <% data.forEach(item => { %>
-            <li>
-                <a href="/detail?brand=<%= item.brand %>"><%= item.brand %></a>
-            </li>
-        <% }); %>
-    </ul>
+        <div style="margin-left: 8em">
 
-    <h3>Delete Motorcycle</h3>
-
-    <input id="deleteInput" type="text" placeholder="Enter brand to delete">
-    <button id="deleteBtn">Delete</button>
+    <div id="root"></div>
     
+    <script type="text/babel">
+        const itemsData = JSON.parse('<%- JSON.stringify(data) %>');
     
-    <!-- Add or Update Motorcycle -->
-    <h3>Add/Update Motorcycle</h3>
-    <form id="addUpdateForm">
-        <input name="brand" type="text" placeholder="Brand" required>
-        <input name="model" type="text" placeholder="Model" required>
-        <input name="year" type="number" placeholder="Year" required>
-        <input name="color" type="text" placeholder="Color" required>
-        <button type="submit">Add/Update</button>
-    </form>
-
-	<%- include('addhw4.ejs') %>
-		
+        // Item component
+        const Item = ({ brand }) => <li><a href={`/detail?brand=${brand}`}>{brand}</a></li>;
+    
+        // Items List component
+        const ItemsList = ({ items }) => (
+            <ul>
+                {items.map(item => <Item key={item.brand} {...item} />)}
+            </ul>
+        );
+    
+        const App = () => (
+            <div style={{ marginleft: "12em" }}>
+                <h1> Vintage Motocross</h1>
+                <ItemsList items={itemsData} />
+                {/* Add other functionalities here */}
+            </div>
+        );
+    
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
     </div>
-		</div>
-		
+    </div>
+    
 </body>
 </html>
