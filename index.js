@@ -29,7 +29,6 @@ app.get('/about', (req, res) => {
     res.render('about');
 });
 
-
 app.get('/detail', async (req, res) => {
     const { brand } = req.query;
     try {
