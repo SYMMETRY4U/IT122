@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Vintage Motorcycles</title>
@@ -5,41 +6,99 @@
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-   
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+
 </head>
 
 <body>
+    <div id="main-wrapper">
+        <div>
+            <div id="root"></div>
+            
+            <script type="text/babel">
+                const motorcycles = [
+                    {"brand": "Macio", "model": "MC400", "year": "1976", "color": "Red"},
+                    {"brand": "Honda", "model": "CR250M", "year": "1977", "color": "Red"},
+                    {"brand": "Suzuki", "model": "TM400", "year": "1974", "color": "Yellow"},
+                    {"brand": "Husquvarna", "model": "125CR", "year": "1974", "color": "Orange"},
+                    {"brand": "Yamaha", "model": "YZ250", "year": "1975", "color": "Yellow"},
+                    {"brand": "Hodaka", "model": "Super Rat", "year": "1970", "color": "Silver"},
+                ]
 
-	<div class="wrapper">
-        <div style="margin-left: 8em">
+                const ListItem = ({ item, clickHandler }) => <li onClick={() => clickHandler(item)}>{item.brand}</li>
 
-    <div id="root"></div>
-    
-    <script type="text/babel">
-        const itemsData = JSON.parse('<%- JSON.stringify(data) %>');
-    
-        // Item component
-        const Item = ({ brand }) => <li><a href={`/detail?brand=${brand}`}>{brand}</a></li>;
-    
-        // Items List component
-        const ItemsList = ({ items }) => (
-            <ul>
-                {items.map(item => <Item key={item.brand} {...item} />)}
-            </ul>
-        );
-    
-        const App = () => (
-            <div style={{ marginleft: "12em" }}>
-                <h1> Vintage Motocross</h1>
-                <ItemsList items={itemsData} />
-                {/* Add other functionalities here */}
-            </div>
-        );
-    
-        ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
+                const ListItems = ({ items, clickHandler }) => {
+                    return <ul>{items.map(item => <ListItem key={item.brand} item={item} clickHandler={clickHandler} />)}</ul>
+                }
+
+                const Detail = (props) => {
+                    return (
+                        <div>
+                            <h3>Motorcycle Details</h3>
+                            {props.item &&
+                                <form>
+                                    <div>
+                                        <b>Brand</b>: &nbsp;<input type="text" name="brand" onChange={props.changeHandler} value={props.item.brand || ''} />
+                                    </div>
+                                    <div>
+                                        <b>Model</b>: &nbsp;<input type="text" name="model" onChange={props.changeHandler} value={props.item.model || ''} />
+                                    </div>
+                                    <div>
+                                        <b>Year</b>: &nbsp; &nbsp; <input type="text" name="year" onChange={props.changeHandler} value={props.item.year || ''} />
+                                    </div>
+                                    <div>
+                                        <b>Color</b>: &nbsp;   <input type="text" name="color" onChange={props.changeHandler} value={props.item.color || ''} />
+                                    </div>
+                                    <div>
+                                    <br/>
+                                        &nbsp; &nbsp; <button type="button" onClick={props.saveChanges}>Save changes</button> &nbsp;
+                                        <button type="button" onClick={props.clearForm}>Clear form</button> 
+                                    </div>
+                                </form>
+                            }
+                        </div>
+                    )                       
+                }
+
+                const MyApp = () => {
+                    const [items, setItems] = React.useState(motorcycles);
+                    const [selectedItem, setSelectedItem] = React.useState();
+                    const [editedItem, setEditedItem] = React.useState();
+
+                    const itemClicked = (item) => {
+                        setSelectedItem({...item});
+                        setEditedItem({...item});
+                    }
+
+                    const itemChanged = (e) => {
+                        setEditedItem({
+                            ...editedItem,
+                            [e.target.name]: e.target.value
+                        });
+                    }
+
+                    const saveChanges = () => {
+                        setItems(items.map(item => item.brand === selectedItem.brand ? editedItem : item));
+                    }
+
+                    const clearForm = () => {
+                        setEditedItem({});
+                    }
+
+                    return (
+                        <div>  
+                            <h2>Vintage Motocross Bikes!</h2>    
+                            <ListItems items={items} clickHandler={itemClicked} />
+                            <hr />
+                            <Detail item={editedItem} changeHandler={itemChanged} saveChanges={saveChanges} clearForm={clearForm} />
+                        </div>
+                    )
+                }
+
+                ReactDOM.render(<MyApp />, document.getElementById('root'));
+            </script>
+
+        </div>
     </div>
-    </div>
-    
 </body>
 </html>
