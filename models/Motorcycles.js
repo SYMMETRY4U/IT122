@@ -24,11 +24,12 @@ mongoose.connection.on('open', () => {
 // define data model as JSON key/value pairs
 // values indicate the data type of each key
 const motorcycleSchema = new Schema({
- title: { type: String, required: true },
- brand: String,
+ brand: { type: String, required: true },
  model: String,
  year: Number,
  color: String
 });
 
-export const Motorcycle = mongoose.model('Motorcycle', motorcycleSchema);
+//export const Motorcycle = mongoose.model('Motorcycles', motorcycleSchema);
+
+export default mongoose.model('Motorcycle', motorcycleSchema);
