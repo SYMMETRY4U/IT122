@@ -1,86 +1,99 @@
-import express from 'express';
-import path from 'path';
-import cors from 'cors';
-import { Motorcycle } from './models/Motorcycles.js';
+'use strict';
 
+import express from 'express';
+import Motorcycle from './models/Motorcycles.js';
 
 const app = express();
+                                            // app.set("port", process.env.PORT || 3000);
+const PORT = process.env.PORT || 3000;  app.set('port', PORT);
+app.use(express.static('./views'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+import cors from 'cors';
+app.use('/api', cors()); // set Access-Control-Allow-Origin header for api route
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(process.cwd(), 'views'));
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(process.cwd(), 'views')));
-
-const PORT = process.env.PORT || 3000;
-app.set('port', PORT);
-
-app.get('/', async (req, res) => {
-    try {
-        const data = await Motorcycle.find({}).lean();
-        res.render('home', { data });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Internal Server Error");
-    }
+app.get('/', (req, res, next) => {
+    res.render('home');
 });
 
-app.get('/about', (req, res) => {
+app.get('/detail', (req,res,next) => {
+    Motorcycle.findOne({ brand:req.query.brand }).lean()
+        .then((motorcycles) => {
+            res.render('details', {result: motorcycles} );
+        })
+        .catch(err => next(err));
+});
+
+app.get('/about', (req,res) => {
+    res.type('text/html');
     res.render('about');
 });
 
-app.get('/detail', async (req, res) => {
-    const { brand } = req.query;
+// api's 
+app.get('/api/v1/motorcycles/:brand', (req, res, next) => {
+    let brand = req.params.brand;
+    Motorcycle.findOne({brand: brand}, (err, result) => {
+        if (err || !result) return next(err);
+        res.json(result);    
+    });
+});     
+// Add or update a motorcycles
+app.get('/api/v1/motorcycles', (req, res, next) => {
+    Motorcycle.find()
+        .then(results => {
+            if (!results) return next(new Error('Results not found'));
+            res.json(results);
+        })
+        .catch(err => next(err));
+});
+
+
+app.get('/api/v1/delete/:id', async (req, res, next) => {
     try {
-        const item = await Motorcycle.findOne({ brand }).lean();
-        if (item) {
-            res.render('detail', { item }); 
-        } else {
-            res.status(404).render('404'); 
-        }
+        let result = await Motorcycle.deleteOne({ "_id": req.params.id });
+        // return # of items deleted
+        res.json({ "deleted": result.n });
     } catch (err) {
-        console.error(err);
-        res.status(500).send("Internal Server Error");
+        return next(err);
     }
 });
 
-app.post('/motorcycle', async (req, res) => {
-    const { brand, model, year, color } = req.body;
+
+app.post('/api/v1/add/', async (req, res, next) => {
     try {
-        const data = { brand, model, year: Number(year), color };
-        const existingMotorcycle = await Motorcycle.findOne({ brand }).lean();
-        const updatedMotorcycle = await Motorcycle.findOneAndUpdate({ brand }, data, { upsert: true, new: true });
-        if (existingMotorcycle) {
-            res.status(200).json({ message: 'Motorcycle updated', data: updatedMotorcycle });
-        } else {
-            res.status(200).json({ message: 'Motorcycle added', data: updatedMotorcycle });
+        if (!req.body._id) { // insert new document
+            let motorcycles = new Motorcycle(req.body);
+            let newMotorcycles = await motorcycles.save();
+            res.json({updated: 0, _id: newMotorcycles._id});
+        } else { // update existing document
+            let result = await Motorcycle.updateOne({ _id: req.body._id}, {brand:req.body.brand, model: req.body.model, year: req.body.year, color: req.body.color });
+            res.json({updated: result.nModified, _id: req.body._id});
         }
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Internal Server Error");
+    } catch(err) {
+        return next(err);
     }
 });
 
-app.delete('/motorcycle', async (req, res) => {
-    const { brand } = req.body;
-    try {
-        const result = await Motorcycle.deleteOne({ brand });
-        if (result.deletedCount === 1) {
-            res.status(200).json({ message: 'Motorcycle deleted', data: result });
-        } else {
-            res.status(200).json({ message: 'Motorcycle not found', data: result });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Internal Server Error', error: err });
-    }
+
+app.get('/api/v1/add/:brand/:model/:year/:color', (req,res, next) => {
+    // find & update existing item, or add new 
+    let brand = req.params.brand;
+    Motorcycle.update({ brand: brand}, {brand:brand, model: req.params.model, year: req.params.year, color:req.params.color }, {upsert: true }, (err, result) => {
+        if (err) return next(err);
+        // nModified = 0 for new item, = 1+ for updated item 
+        res.json({updated: result.nModified});
+    });
 });
 
-app.use((req, res) => {
-    res.status(404).render('404'); 
+app.use((req,res) => {
+    res.type('text/plain'); 
+    res.status(404);
+    res.send('404 - Not found');
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Express started on http://localhost:${PORT}`);
 });
